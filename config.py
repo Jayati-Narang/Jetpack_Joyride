@@ -38,28 +38,36 @@ class System(Board, Din, Coins, Fire_Beams):
             for j in range(self.board.left, self.board.left + self.board.s_width):
                 # print(Back.GREEN + self.board.grid[i][j], end='')
                 if(self.board.grid[i][j] == '(' or self.board.grid[i][j] == ')'):
-                    print(Fore.WHITE + self.board.grid[i][j], end='')
+                    print(Fore.WHITE + self.board.grid[i][j] + Fore.RESET, end='')
+                    #print(Style.RESET_ALL)
                 elif(self.board.grid[i][j] == '*'):
-                    print(Fore.RED + self.board.grid[i][j], end='')
+                    print(Fore.RED + self.board.grid[i][j] + Fore.RESET, end='')
+                    # print(Style.RESET_ALL)
                 elif(self.board.grid[i][j] == '-'):
-                    print(Fore.WHITE +self.board.grid[i][j], end='')
+                    print(Fore.WHITE +self.board.grid[i][j] + Fore.RESET, end='')
+                    # print(Style.RESET_ALL)
                 elif(self.board.grid[i][j] == '$'):
                     print(Fore.YELLOW + self.board.grid[i][j], end='')
+                    # print(Style.RESET_ALL)
                 else:
                     print(Back.BLUE + self.board.grid[i][j], end='')
-                # print(Style.RESET_ALL)
+                    # print(Style.RESET_ALL)
+                # print(Fore.RESET)
                 # elif(self.board.grid[i][j] == '.'):
                 #     print(Fore.RED + self.board.grid[i][j], end=' ')
                 # print(Back.GREEN)
             print()
             # print(Style.RESET_ALL)
+   
         for i in range(self.board.height - 8, self.board.height):
             for j in range(self.board.s_width):
                 # print(Back.GREEN + self.board.grid[i][j], end='')
+                
                 print(Back.GREEN + self.board.grid[i][j], end='')
                 
                 # print(Back.GREEN)
             print()
+            # print(Style.RESET_ALL)
             # print(Style.RESET_ALL)
 
 obj_system = System()
