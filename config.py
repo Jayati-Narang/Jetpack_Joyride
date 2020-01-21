@@ -3,15 +3,17 @@ from board import *
 from person import *
 from help_input import *
 from obstracle import *
+import time
 # import board
 # import person
 # import obstracle
 # import help_input
 
-class System(Board, Din, Coins):
+class System(Board, Din, Coins, Fire_Beams):
     def __init__(self):
         self.score = 0
         self.board = Board()
+        self.fire_beams = Fire_Beams(0, 0, self.board)
         self.din = Din(0, 33, 5, self.board)
         self.coins = Coins(0, 0 , self.board)
         
@@ -37,6 +39,8 @@ class System(Board, Din, Coins):
                 # print(Back.GREEN + self.board.grid[i][j], end='')
                 if(self.board.grid[i][j] == '(' or self.board.grid[i][j] == ')'):
                     print(Fore.WHITE + self.board.grid[i][j], end='')
+                elif(self.board.grid[i][j] == '*'):
+                    print(Fore.RED + self.board.grid[i][j], end='')
                 elif(self.board.grid[i][j] == '-'):
                     print(Fore.WHITE +self.board.grid[i][j], end='')
                 elif(self.board.grid[i][j] == '$'):
@@ -62,17 +66,25 @@ obj_system = System()
 # obj_system.run()
 # obj_system.render()
 obj_system.coins.put_coins(obj_system.board)
-
-while(True):
+obj_system.fire_beams.put_beams(obj_system.board)
+orig_time = time.time()
+x = True
+while(x):
     print('\033[H')
+    if time.time() - orig_time >= 0.15:
+        obj_system.check_collision()
+        obj_system.run()
+        obj_system.render()
+        orig_time = time.time()
     # for i in range(10):
     #     for j in range(10):
     #         if obj_system.board.grid[obj_system.din.top+i][obj_system.din.left+j] == '$':
     #             obj_system.din.collect_coin()
     #             obj_system.coins.remove_coin(obj_system.board)   
-    obj_system.check_collision()
-    obj_system.run()
-    obj_system.render()
+    # obj_system.check_collision()
+    # obj_system.run()
+    # obj_system.render()
+    # orig_time = time.time()
 
     inp = get_input()
     if inp == 'd':
@@ -81,6 +93,9 @@ while(True):
         obj_system.din.move_left(obj_system.board)
     elif inp == 'w':
         obj_system.din.jump(obj_system.board)
+    elif inp == 'q':
+        quit()
+        x = False
     # elif inp == 'x':
     #     obj_system.din.move_down(obj_system.board)
     

@@ -55,7 +55,7 @@ class  Din(Person):
         board.grid[self.top+4][self.left+8] = ' '
 ## The screen will move continuously therefore when mario reaches the border then we have to push mario to right but this condition won't be put here ## 
     def move_left(self, board):
-        if self.left != 0 and self.left != board.left:
+        if self.left > 1 and self.left > board.left - 1:
             self.remove_din(board)
             self.left = self.left - 1
                 
