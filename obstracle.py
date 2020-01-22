@@ -5,16 +5,18 @@ import random
 #         self.top = top
 class Coins:
     def __init__(self, left, top, board):
-        self.left = left
-        self.top = top
+        self.__left = left
+        self.__top = top
         # super().__init__(left, top, board)
         
     
     def create_coins(self, left, top, board):
         number = random.randrange(1,10)
         for i in range(number):
-            board.grid[top][left+i] = '$'
-            board.grid[top+1][left+i] = '$'
+            # board.grid[top][left+i] = '$'
+            # board.grid[top+1][left+i] = '$'
+            board.set_grid(left+i, top, '$')
+            board.set_grid(left+i, top+1, '$')
     
     def put_coins(self, board):
         for i in range(0, 1200, 200):
@@ -24,22 +26,23 @@ class Coins:
             self.create_coins(y+i, x, board)
     
     def remove_coin(self, left, top, board):
-        board.grid[top][left] = ' '
+        board.set_grid(left, top, ' ')
     
     
 class Fire_Beams:
     def __init__(self, left, top, board):
-        self.left = left
-        self.top = top
+        self.__left = left
+        self.__top = top
     def create_horizontal_beams(self, left, top, board):
         for i in range(6):
-            board.grid[top][left + i] = '*'
+            board.set_grid(left + i, top, '*')
     def create_vertical_beams(self, left,top, board):                              
         for i in range(6):                                    
-            board.grid[top+i][left] = '*'                             
+            board.set_grid(left, top+i,'*')                             
     def create_slanting_beams(self, left, top, board):                                                
         for i in range(6):                                        
-            board.grid[top+5-i] [left + i] = '*'
+            # board.grid[top+5-i] [left + i] = '*'
+            board.set_grid(left+i, top+5-i, '*')
 
     def put_beams(self,board):
         # for i in range(0, 1200, 75):
@@ -94,53 +97,82 @@ class Fire_Beams:
     def remove_beam(self, left, board):
         for  i in range(50):
             for j in range(left - 20, left + 20):
-                if board.grid[i][j] == '*':
-                    board.grid[i][j] = ' '
+                # if board.grid[i][j] == '*':
+                #     board.grid[i][j] = ' '
+                grid = board.get_grid()
+                if grid[i][j] == '*':
+                    board.set_grid(j, i, ' ')
                     
     def remove_beam_only_right(self, left, board):
         for i in range(50):
             for j in range(left - 30, left + 30):
-                if board.grid[i][j] == '*':
-                    board.grid[i][j] =' '
+                # if board.grid[i][j] == '*':
+                #     board.grid[i][j] =' '
+                grid = board.get_grid()
+                if grid[i][j] == '*':
+                    board.set_grid(j, i, ' ')
             
 class Power_booster:
     def __init__(self,x,y,board):
-        self.x = x
-        self.y = y
+        self.__x = x
+        self.__y = y
     
     def create_power_booster(self, board):
-        board.grid[20][12] = '@'
-        board.grid[23][100]='@'
-        board.grid[26][162]='@'
-        board.grid[12][202]='@'
-        board.grid[4][302]='@'
-        board.grid[30][402]='@'
-        board.grid[25][503]='@'    
-        board.grid[26][543]='@'
-        board.grid[27][637]='@'
-        board.grid[13][739]='@'
-        board.grid[10][803]='@'
-        board.grid[31][920]='@'
-        board.grid[29][1001]='@'
-        board.grid[38][1207]='@'
-        board.grid[29][1302]='@'
-
+        
+        # board.grid[20][12] = '@'
+        # board.grid[23][100]='@'
+        # board.grid[26][162]='@'
+        # board.grid[12][202]='@'
+        # board.grid[4][302]='@'
+        # board.grid[30][402]='@'
+        # board.grid[25][503]='@'    
+        # board.grid[26][543]='@'
+        # board.grid[27][637]='@'
+        # board.grid[13][739]='@'
+        # board.grid[10][803]='@'
+        # board.grid[31][920]='@'
+        # board.grid[29][1001]='@'
+        # board.grid[38][1207]='@'
+        # board.grid[29][1302]='@'
+        board.set_grid(12, 20, '@')
+        board.set_grid(100, 23, '@')
+        board.set_grid(162, 26, '@')
+        board.set_grid(202, 12, '@')
+        board.set_grid(302, 4, '@')
+        board.set_grid(402, 30, '@')
+        board.set_grid(503, 25, '@')
+        board.set_grid(543, 26, '@')
+        board.set_grid(637, 27, '@')
+        board.set_grid(739, 13, '@')
+        board.set_grid(803, 10, '@')
+        board.set_grid(920, 31, '@')
+        board.set_grid(1001, 29, '@')
+        board.set_grid(1207, 38, '@')
+        board.set_grid(1302, 29, '@')
+      
+        
+        
+        
 
 class Magnet:                                 ### The object will start attracting in range +-40
 
     def __init__(self, left, top, board):
-        self.left = left
-        self.top = top
+        self.__left = left
+        self.__top = top
     
     def create_magnet(self, left, top, board):
         for i in range(1, 5):
-            board.grid[self.top+i][self.left] = '|'
-            board.grid[self.top+i][self.left+1] = '|'
-            board.grid[self.top+i][self.left+8] = '|'
-            board.grid[self.top+i][self.left+9] = '|'
+            #board.grid[self.__top+i][self.__left] = '|'
+            board.set_grid(self.__left, self.__top + i, '|')
+            #board.grid[self.__top+i][self.__left+1] = '|'
+            board.set_grid(self.__left+1, self.__top + i, '|')
+            board.set_grid(self.__left+8, self.__top+i,'|')
+            board.set_grid(self.__left+9, self.__top+i, '|')
+            #board.grid[self.__top+i][self.__left+8] = '|'
+            #board.grid[self.__top+i][self.__left+9] = '|'
         for j in range(10):
-            board.grid[self.top][self.left + j] = '|'
-            
+            #board.grid[self.__top][self.__left + j] = '|'
+            board.set_grid(self.__left + j, self.__top, '|')
     def put_magnet(self, board):
         self.create_magnet(330, 2, board)
         

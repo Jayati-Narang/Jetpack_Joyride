@@ -2,63 +2,88 @@ import time
 
 class Person:
     def __init__(self, left, top, lives, board):
-      self.left = left
-      self.top = top
-      self.coins = 0
-      self.lives = 3
-      
+      self._left = left
+      self._top = top
+      self._coins = 0
+      self._lives = 3
+    def get_lives(self):
+        return self._lives  
+    def get_coins(self):
+        return self._coins
+    def set_left(self, x):
+        self._left = x
+    def set_top(self, x):
+        self._top = x 
+    def get_left(self):
+        return self._left
+    def get_top(self):
+        return self._top   
       
 class  Din(Person):
     def __init__(self, left, top, lives, board):
         super().__init__(left, top, lives, board)
-        self.s_time = round(time.time())
-        self.speed = 1
-        self.boost_time = 0
-        self.shield_on = 0 ### when sheild_on is 1 then shield is on 
-        self.enemy_killed = 0
-        
+        self.__s_time = round(time.time())
+        self.__speed = 1
+        self.__boost_time = 0
+        self.__shield_on = 0 ### when sheild_on is 1 then shield is on 
+        self.__enemy_killed = 0
+       
     def create_din(self, board):
-        if self.shield_on == 0: 
-            board.grid[self.top][self.left+4] = '.'
-            board.grid[self.top+1][self.left+3] = '.'
-            board.grid[self.top+1][self.left+5] = '.'
-        # board.grid[self.top+2][self.left+2] = '.'
-        # board.grid[self.top+2][self.left+3] = '.'
-        # board.grid[self.top+2][self.left+4] = '.'
-        # board.grid[self.top+2][self.left+5] = '.'
-        # board.grid[self.top+2][self.left+6] = '.'
+        if self.__shield_on == 0: 
+            # board.grid[self._top][self._left+4] = '.'
+            # board.grid[self._top+1][self._left+3] = '.'
+            # board.grid[self._top+1][self._left+5] = '.'
+            board.set_grid(self._left+4, self._top, '.')
+            board.set_grid(self._left+3, self._top + 1, '.')
+            board.set_grid(self._left+5, self._top + 1, '.')
+            
             for i in range(2,6):
                 for j in range(2, 7):
-                    board.grid[self.top+i][self.left+j] = '.'
+                    # board.grid[self._top+i][self._left+j] = '.'
+                    board.set_grid(self._left+j, self._top + i, '.')
             for i in range(6, 9):
-                board.grid[self.top+i][self.left+3] = '.'
-                board.grid[self.top+i][self.left+5] = '.'
-            board.grid[self.top+3][self.left+1] = '.'
-            board.grid[self.top+4][self.left] = '.'
-            board.grid[self.top+3][self.left+7] = '.'
-            board.grid[self.top+4][self.left+8] = '.'
+                # board.grid[self._top+i][self._left+3] = '.'
+                # board.grid[self._top+i][self._left+5] = '.'
+                board.set_grid(self._left+3, self._top+i, '.')
+                board.set_grid(self._left+5, self._top +i, '.')
+            # board.grid[self._top+3][self._left+1] = '.'
+            # board.grid[self._top+4][self._left] = '.'
+            # board.grid[self._top+3][self._left+7] = '.'
+            # board.grid[self._top+4][self._left+8] = '.'
+            board.set_grid(self._left+1, self._top+3, '.')
+            board.set_grid(self._left, self._top+4, '.')
+            board.set_grid(self._left+7, self._top+3, '.')
+            board.set_grid(self._left+8, self._top+4, '.')
 
-        elif self.shield_on == 1:
+        elif self.__shield_on == 1:
             for j in range(4):
-                board.grid[self.top + j][self.left + 8] = '.'
-            board.grid[self.top][self.left+4] = '.'
-            board.grid[self.top+1][self.left+3] = '.'
-            board.grid[self.top+1][self.left+5] = '.'
-        # board.grid[self.top+2][self.left+2] = '.'
-        # board.grid[self.top+2][self.left+3] = '.'
-        # board.grid[self.top+2][self.left+4] = '.'
-        # board.grid[self.top+2][self.left+5] = '.'
-        # board.grid[self.top+2][self.left+6] = '.'
+                # board.grid[self._top + j][self._left + 8] = '.'
+                board.set_grid(self._left+8, self._top + j, '.')
+            # board.grid[self._top][self._left+4] = '.'
+            # board.grid[self._top+1][self._left+3] = '.'
+            # board.grid[self._top+1][self._left+5] = '.'
+            board.set_grid(self._left+4, self._top, '.') 
+            board.set_grid(self._left+3, self._top+1, '.') 
+            board.set_grid(self._left+5, self._top+1, '.') 
+            # board.set_grid(self._left+4, self.top, '.')      
             for i in range(2,6):
                 for j in range(2, 7):
-                    board.grid[self.top+i][self.left+j] = '.'
+                    # board.grid[self._top+i][self._left+j] = '.'
+                    board.set_grid(self._left+j, self._top + i, '.') 
             for i in range(6, 9):
-                board.grid[self.top+i][self.left+3] = '.'
-                board.grid[self.top+i][self.left+5] = '.'
-            board.grid[self.top+3][self.left+1] = '.'
-            board.grid[self.top+4][self.left] = '.'
-            board.grid[self.top+3][self.left+7] = '.'
-            board.grid[self.top+4][self.left+8] = '.'
+                # board.grid[self._top+i][self._left+3] = '.'
+                # board.grid[self._top+i][self._left+5] = '.'
+                board.set_grid(self._left+3, self._top +i, '.')
+                board.set_grid(self._left+5, self._top +i, '.')
+                  
+            # board.grid[self._top+3][self._left+1] = '.'
+            # board.grid[self._top+4][self._left] = '.'
+            # board.grid[self._top+3][self._left+7] = '.'
+            # board.grid[self._top+4][self._left+8] = '.'
+            board.set_grid(self._left+1, self._top+3, '.') 
+            board.set_grid(self._left, self._top+4, '.') 
+            board.set_grid(self._left+7, self._top+3, '.') 
+            board.set_grid(self._left+8, self._top+4, '.') 
     
     
 
@@ -101,83 +126,140 @@ class  Din(Person):
     #         board.grid[self.top+4][self.left+8] = ' '
     
     def enemy_killed_increase(self):
-        self.enemy_killed += 1
+        self.__enemy_killed += 1
     
                     
     def remove_din(self, board):
-        if(self.shield_on):
+        if(self.__shield_on):
             for j in range(4):
-                board.grid[self.top + j][self.left + 8] = ' '
-        board.grid[self.top][self.left+4] = ' '
-        board.grid[self.top+1][self.left+3] = ' '
-        board.grid[self.top+1][self.left+5] = ' '
-        # board.grid[self.top+2][self.left+2] = '.'
-        # board.grid[self.top+2][self.left+3] = '.'
-        # board.grid[self.top+2][self.left+4] = '.'
-        # board.grid[self.top+2][self.left+5] = '.'
-        # board.grid[self.top+2][self.left+6] = '.'
+                # board.grid[self._top + j][self._left + 8] = ' '
+                board.set_grid(self._left+8, self._top + j, ' ') 
+        # board.grid[self._top][self._left+4] = ' '
+        # board.grid[self._top+1][self._left+3] = ' '
+        # board.grid[self._top+1][self._left+5] = ' '
+
+        # for i in range(2,6):
+        #     for j in range(2, 7):
+        #         board.grid[self._top+i][self._left+j] = ' '
+        # for i in range(6, 9):
+        #     board.grid[self._top+i][self._left+3] = ' '
+        #     board.grid[self._top+i][self._left+5] = ' '
+        # board.grid[self._top+3][self._left+1] = ' '
+        # board.grid[self._top+4][self._left] = ' '
+        # board.grid[self._top+3][self._left+7] = ' '
+        # board.grid[self._top+4][self._left+8] = ' '
+        board.set_grid(self._left+4, self._top, ' ')
+        board.set_grid(self._left+3, self._top + 1, ' ')
+        board.set_grid(self._left+5, self._top + 1, ' ')
+            
         for i in range(2,6):
             for j in range(2, 7):
-                board.grid[self.top+i][self.left+j] = ' '
+                    # board.grid[self._top+i][self._left+j] = '.'
+                board.set_grid(self._left+j, self._top + i, ' ')
         for i in range(6, 9):
-            board.grid[self.top+i][self.left+3] = ' '
-            board.grid[self.top+i][self.left+5] = ' '
-        board.grid[self.top+3][self.left+1] = ' '
-        board.grid[self.top+4][self.left] = ' '
-        board.grid[self.top+3][self.left+7] = ' '
-        board.grid[self.top+4][self.left+8] = ' '
+                # board.grid[self._top+i][self._left+3] = '.'
+                # board.grid[self._top+i][self._left+5] = '.'
+            board.set_grid(self._left+3, self._top+i, ' ')
+            board.set_grid(self._left+5, self._top +i, ' ')
+            # board.grid[self._top+3][self._left+1] = '.'
+            # board.grid[self._top+4][self._left] = '.'
+            # board.grid[self._top+3][self._left+7] = '.'
+            # board.grid[self._top+4][self._left+8] = '.'
+        board.set_grid(self._left+1, self._top+3, ' ')
+        board.set_grid(self._left, self._top+4, ' ')
+        board.set_grid(self._left+7, self._top+3, ' ')
+        board.set_grid(self._left+8, self._top+4, ' ')
         
     def remove_din_on_collision(self, board):
+        grid = board.get_grid()    
+        if grid[self._top][self._left+4] == '.':
+            # board.grid[self._top][self._left+4] = ' '
+            board.set_grid(self._left+4, self._top, ' ')
+            
+        grid = board.get_grid()    
         
-        if board.grid[self.top][self.left+4] == '.':
-            board.grid[self.top][self.left+4] = ' '
-        if board.grid[self.top+1][self.left+3] == '.':
-            board.grid[self.top+1][self.left+3] = ' '
-        if board.grid[self.top+1][self.left+5] == '.':
-            board.grid[self.top+1][self.left+5] = '.'
-        
-        # board.grid[self.top+2][self.left+2] = '.'
-        # board.grid[self.top+2][self.left+3] = '.'
-        # board.grid[self.top+2][self.left+4] = '.'
-        # board.grid[self.top+2][self.left+5] = '.'
-        # board.grid[self.top+2][self.left+6] = '.'
+        if grid[self._top+1][self._left+3] == '.':
+            # board.grid[self._top+1][self._left+3] = ' '
+            board.set_grid(self._left+3, self._top + 1, ' ')
+            
+        grid = board.get_grid()
+            
+        if board.grid[self._top+1][self._left+5] == '.':
+            # board.grid[self._top+1][self._left+5] = '.'
+            board.set_grid(self._left+5, self._top + 1, ' ')
+        grid = board.get_grid()          
+      
         for i in range(2,6):
             for j in range(2, 7):
-                if board.grid[self.top+i][self.left+j] == '.':
-                    board.grid[self.top+i][self.left+j] = ' '
+                grid = board.get_grid()    
+                if grid[self._top+i][self._left+j] == '.':
+                    board.set_grid(self._left+j, self._top + i, ' ')
+                    # board.grid[self._top+i][self._left+j] = ' '
         for i in range(6, 9):
-            if board.grid[self.top+i][self.left+3] == '.':
-                board.grid[self.top+i][self.left+3] = ' '
-            if board.grid[self.top+i][self.left+5] == '.':
-                board.grid[self.top+i][self.left+5] = ' '
-        if board.grid[self.top+3][self.left+1] == '.':
-            board.grid[self.top+3][self.left+1] = ' '
-        if board.grid[self.top+4][self.left] == '.':
-            board.grid[self.top+4][self.left] = ' '
-        if board.grid[self.top+3][self.left+7] == '.':
-            board.grid[self.top+3][self.left+7] = ' '
-        if board.grid[self.top+4][self.left+8] == '.':
-            board.grid[self.top+4][self.left+8] = ' '
+            grid = board.get_grid()    
+            if grid[self._top+i][self._left+3] == '.':
+                # board.grid[self._top+i][self._left+3] = ' '
+                board.set_grid(self._left+3, self._top+i, ' ')
+            
+            grid = board.get_grid()    
+            if grid[self._top+i][self._left+5] == '.':
+                # board.grid[self._top+i][self._left+5] = ' '
+                board.set_grid(self._left+5, self._top +i, ' ')
+        grid = board.get_grid()    
+        if grid[self._top+3][self._left+1] == '.':
+            # board.grid[self._top+3][self._left+1] = ' '
+            board.set_grid(self._left+1, self._top+3, ' ')
+        
+        grid = board.get_grid()    
+        if grid[self._top+4][self._left] == '.':
+            #board.grid[self._top+4][self._left] = ' '
+            board.set_grid(self._left, self._top+4, ' ')
+       
+        grid = board.get_grid()    
+        if grid[self._top+3][self._left+7] == '.':
+            #board.grid[self._top+3][self._left+7] = ' '
+            board.set_grid(self._left+7, self._top+3, ' ')
+       
+        grid = board.get_grid()    
+        if grid[self._top+4][self._left+8] == '.':
+            #board.grid[self._top+4][self._left+8] = ' '
+            board.set_grid(self._left+8, self._top+4, ' ')
     
       
     def decrease_live(self, board):
-        self.lives -= 1
+        self._lives -= 1
 ## The screen will move continuously therefore when mario reaches the border then we have to push mario to right but this condition won't be put here ## 
     def move_left(self, board):
-        if self.left > self.speed and self.left > board.left + self.speed:
+        if self._left > self.__speed and self._left > board.get_left() + self.__speed:
             self.remove_din(board)
-            self.left = self.left - self.speed
+            self._left = self._left - self.__speed
                 
     def move_right(self, board):
-        if self.left+8 != 1399 - self.speed and self.left+9 <= board.left+200 - self.speed: 
+        if self._left+8 != 1399 - self.__speed and self._left+9 <= board.get_left()+200 - self.__speed: 
             self.remove_din(board)     
-            self.left = self.left + self.speed
+            self._left = self._left + self.__speed
     def jump(self, board):
-        if self.top >= self.speed + 1:
+        if self._top >= self.__speed + 1:
             self.remove_din(board)
-            self.top = self.top - self.speed
+            self._top = self._top - self.__speed
             
+    def get_shield_on(self):
+        return self.__shield_on
+    def get_speed(self):
+        return self.__speed
 
+    def get_boost_time(self):
+        return self.__boost_time
+    def get_enemy_killed(self):
+        return self.__enemy_killed
+    def set_speed(self, x):
+        self.__speed = x
+    def set_boost_time(self, x):
+        self.__boost_time = x
+
+    def set_shield_on(self, x):
+        self.__shield_on = x  
+    
               
         
     # def move_down(self, board):
@@ -230,6 +312,14 @@ class  Din(Person):
     #             self.top = self.top - 1  
     
     def collect_coin(self):
-        self.coins = self.coins + 1
+        self._coins = self._coins + 1
+        
+        
+        
+        
+        
+        
+    # class Enemy:
+    #     def __init__(self, )
     
                                                                                                                                                                                                                                                                                                                                                                                             

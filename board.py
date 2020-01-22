@@ -5,92 +5,100 @@ from colorama import Fore, Back, Style
 
 class Board:
     def __init__(self):
-        self.width = 1400
-        self.height = 50
-        self.s_width = 200
-        self.left = 0
-        self.grid = [[' ' for i in range(self.width)] for j in range(self.height)]
-        self.coins = []
-        self.bullets = []
-        self.black = '\u001b[30;1m'
-        self.red = '\u001b[31;1m'
-        self.green = '\u001b[32;1m'
-        self.yellow = '\u001b[33;1m'
-        self.blue = '\u001b[34;1m'
-        self.magenta = '\u001b[35;1m'
-        self.cyan = '\u001b[36;1m'
-        self.white = '\u001b[37;1m'
-        self.reset = '\u001b[0m'
+        self.__width = 1400
+        self.__height = 50
+        self.__s_width = 200
+        self.__left = 0
+        self.__grid = [[' ' for i in range(self.__width)] for j in range(self.__height)]
+       
+    def get_grid(self):
+        return self.__grid
+    def get_s_width(self):
+        return self.__s_width
+    def get_height(self):
+        return self.__height
+    def set_grid(self, x, y, val):
+        self.__grid[y][x] = val
+    def get_left(self):
+        return self.__left
+    def set_left(self, x):
+        self.__left = x
+    
+        
+    
+    
+    
+    
     
     def move_screen(self, din):
-        self.left = self.left + din.speed
-        self.grid[0][self.left+0] = Fore.WHITE + 'C' + Fore.RESET
-        self.grid[0][self.left+1] = Fore.WHITE + 'O' + Fore.RESET
-        self.grid[0][self.left+2] = Fore.WHITE + 'I' + Fore.RESET
-        self.grid[0][self.left+3] = Fore.WHITE + 'N' + Fore.RESET
-        self.grid[0][self.left+4] = Fore.WHITE + 'S' + Fore.RESET
-        self.grid[0][self.left+5] = Fore.WHITE + ':' + Fore.RESET
-        self.grid[0][self.left+7] =  Fore.WHITE + str(din.coins % 10) + Fore.RESET 
-        self.grid[0][self.left+6] = Fore.WHITE + str(din.coins // 10) + Fore.RESET 
-        self.grid[0][self.left+8] = Fore.WHITE + ' ' + Fore.RESET
-        self.grid[0][self.left+9] = Fore.WHITE + 'L' + Fore.RESET
-        self.grid[0][self.left+10] = Fore.WHITE + 'I' + Fore.RESET
-        self.grid[0][self.left+11] = Fore.WHITE + 'V' + Fore.RESET
-        self.grid[0][self.left+12] = Fore.WHITE + 'E' + Fore.RESET
-        self.grid[0][self.left+13] = Fore.WHITE + 'S' + Fore.RESET
-        self.grid[0][self.left+14] = Fore.WHITE + ':' + Fore.RESET
-        self.grid[0][self.left+15] = Fore.WHITE + str(din.lives) + Fore.RESET
-        self.grid[0][self.left+16] = Fore.WHITE + ' ' + Fore.RESET 
-        self.grid[0][self.left+17] = Fore.WHITE + 'S' + Fore.RESET
-        self.grid[0][self.left+18] = Fore.WHITE + 'C' + Fore.RESET
-        self.grid[0][self.left+19] = Fore.WHITE + 'O' + Fore.RESET
-        self.grid[0][self.left+20] = Fore.WHITE + 'R' + Fore.RESET
-        self.grid[0][self.left+21] = Fore.WHITE + 'E' + Fore.RESET
-        self.grid[0][self.left+22] = Fore.WHITE + 'S' + Fore.RESET
-        self.grid[0][self.left+23] = Fore.WHITE + ':' + Fore.RESET
-        self.grid[0][self.left+25] = Fore.WHITE + str((din.coins + din.enemy_killed * 2)%10) + Fore.RESET
-        self.grid[0][self.left+24] = Fore.WHITE + str((din.coins + din.enemy_killed * 2)//10) + Fore.RESET
-        self.grid[0][self.left+26] = Fore.WHITE + ' ' + Fore.RESET
+        self.__left = self.__left + din.get_speed()
+        self.__grid[0][self.__left+0] = Fore.WHITE + 'C' + Fore.RESET
+        self.__grid[0][self.__left+1] = Fore.WHITE + 'O' + Fore.RESET
+        self.__grid[0][self.__left+2] = Fore.WHITE + 'I' + Fore.RESET
+        self.__grid[0][self.__left+3] = Fore.WHITE + 'N' + Fore.RESET
+        self.__grid[0][self.__left+4] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+5] = Fore.WHITE + ':' + Fore.RESET
+        self.__grid[0][self.__left+7] =  Fore.WHITE + str(din.get_coins() % 10) + Fore.RESET 
+        self.__grid[0][self.__left+6] = Fore.WHITE + str(din.get_coins() // 10) + Fore.RESET 
+        self.__grid[0][self.__left+8] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+9] = Fore.WHITE + 'L' + Fore.RESET
+        self.__grid[0][self.__left+10] = Fore.WHITE + 'I' + Fore.RESET
+        self.__grid[0][self.__left+11] = Fore.WHITE + 'V' + Fore.RESET
+        self.__grid[0][self.__left+12] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+13] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+14] = Fore.WHITE + ':' + Fore.RESET
+        self.__grid[0][self.__left+15] = Fore.WHITE + str(din.get_lives()) + Fore.RESET
+        self.__grid[0][self.__left+16] = Fore.WHITE + ' ' + Fore.RESET 
+        self.__grid[0][self.__left+17] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+18] = Fore.WHITE + 'C' + Fore.RESET
+        self.__grid[0][self.__left+19] = Fore.WHITE + 'O' + Fore.RESET
+        self.__grid[0][self.__left+20] = Fore.WHITE + 'R' + Fore.RESET
+        self.__grid[0][self.__left+21] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+22] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+23] = Fore.WHITE + ':' + Fore.RESET
+        self.__grid[0][self.__left+25] = Fore.WHITE + str((din.get_coins() + din.get_enemy_killed() * 2)%10) + Fore.RESET
+        self.__grid[0][self.__left+24] = Fore.WHITE + str((din.get_coins() + din.get_enemy_killed() * 2)//10) + Fore.RESET
+        self.__grid[0][self.__left+26] = Fore.WHITE + ' ' + Fore.RESET
         
-    def create_boundary(self, din):
+    def create_boundary(self):
         
-        for i in range(self.width):
-            # self.grid[self.height - 1][i] = Fore.WHITE + '^' + Fore.RESET
-            self.grid[self.height - 1][i] = '^'
+        for i in range(self.__width):
+            # self.__grid[self.__height - 1][i] = Fore.WHITE + '^' + Fore.RESET
+            self.__grid[self.__height - 1][i] = '^'
         ### making sky above which the mad can't go
-        for i in range(self.width):
-            self.grid[0][i] = Fore.WHITE + '-' + Fore.RESET 
-        # self.grid[0][0] = 'C'
-        # self.grid[0][1] = 'O'
-        # self.grid[0][2] = 'I'
-        # self.grid[0][3] = 'N'
-        # self.grid[0][4] = 'S'
-        # self.grid[0][6] =  str(din.coins % 10)
-        # self.grid[0][5] = str(din.coins // 10)
+        for i in range(self.__width):
+            self.__grid[0][i] = Fore.WHITE + '-' + Fore.RESET 
+        # self.__grid[0][0] = 'C'
+        # self.__grid[0][1] = 'O'
+        # self.__grid[0][2] = 'I'
+        # self.__grid[0][3] = 'N'
+        # self.__grid[0][4] = 'S'
+        # self.__grid[0][6] =  str(din.coins % 10)
+        # self.__grid[0][5] = str(din.coins // 10)
            
     
     def create_clouds(self, left, top):
-        self.grid[top+3][left] = '('
-        self.grid[top+3][left+1] = '('
-        self.grid[top+3][left+2] = '('
-        self.grid[top+3][left+3] = ')'
-        self.grid[top+3][left+4] = ')'
-        self.grid[top+3][left+5] = ')'
-        self.grid[top+2][left+1] = '('
-        self.grid[top+2][left+2] = '('
-        self.grid[top+2][left+3] = ')'
-        self.grid[top+2][left+4] = ')'
-        self.grid[top+1][left+2] = '('
-        self.grid[top+1][left+3] = ')'
+        self.__grid[top+3][left] = '('
+        self.__grid[top+3][left+1] = '('
+        self.__grid[top+3][left+2] = '('
+        self.__grid[top+3][left+3] = ')'
+        self.__grid[top+3][left+4] = ')'
+        self.__grid[top+3][left+5] = ')'
+        self.__grid[top+2][left+1] = '('
+        self.__grid[top+2][left+2] = '('
+        self.__grid[top+2][left+3] = ')'
+        self.__grid[top+2][left+4] = ')'
+        self.__grid[top+1][left+2] = '('
+        self.__grid[top+1][left+3] = ')'
 
     # def create_coins(self, left, top):
     #     number = random.randrange(1,10)
     #     for i in range(number):
-    #         self.grid[top][left+i] = '$'
-    #         self.grid[top+1][left+i] = '$'
+    #         self.__grid[top][left+i] = '$'
+    #         self.__grid[top+1][left+i] = '$'
         
-    def create_scenery(self, din):
-        self.create_boundary(din)
+    def create_scenery(self):
+        self.create_boundary()
         ######## Creating clouds ########
         self.create_clouds(50, 14)
         self.create_clouds(100, 6)
