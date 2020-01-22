@@ -10,7 +10,7 @@ import sys
 # import obstracle
 # import help_input
 
-class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet):
+class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet, Enemy):
     def __init__(self):
         self.score = 0
         self.board = Board()
@@ -19,6 +19,7 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet):
         self.din = Din(0, 33, 5, self.board)
         self.coins = Coins(0, 0 , self.board)
         self.magnet = Magnet(330, 2, self.board)
+        self.enemy = Enemy(45, 20,5, self.board)
         
     def run(self):
         self.board.create_scenery()
@@ -27,6 +28,7 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet):
         self.din.move_right(self.board)
         
         self.din.create_din(self.board)
+        self.enemy.create_enemy(self.board)
          ##to make sure din does not go out of the screen
     ##    self.board.render(self)
     

@@ -319,7 +319,34 @@ class  Din(Person):
         
         
         
-    # class Enemy:
-    #     def __init__(self, )
+class Enemy(Person):
+    def __init__(self, left, top, lives, board):
+        super().__init__(left, top, lives, board)
+        self.__s_time = round(time.time())
+        self.__speed = 1
     
-                                                                                                                                                                                                                                                                                                                                                                                            
+    def create_enemy(self, board):
+        board.set_grid(self._left,self._top+4, '{')
+        board.set_grid(self._left+1,self._top+4, 'D')
+        board.set_grid(self._left+2,self._top+4, '}')
+        board.set_grid(self._left+2,self._top+3, '.')
+        board.set_grid(self._left+2,self._top+5, '_')
+        board.set_grid(self._left+3,self._top+2, '.')
+        board.set_grid(self._left+4,self._top+1, '(')
+        board.set_grid(self._left+5,self._top+1, 'o')
+        board.set_grid(self._left+6,self._top+1, 'o')
+        board.set_grid(self._left+8,self._top+1, '|')
+        board.set_grid(self._left+5,self._top, '(') 
+        board.set_grid(self._left+6,self._top, ',')
+        board.set_grid(self._left+7,self._top, ',')
+        board.set_grid(self._left+8,self._top, ')')  
+        board.set_grid(self._left+3,self._top+5, '_')
+        board.set_grid(self._left+4,self._top+6, '_')
+        board.set_grid(self._left+5,self._top+7, '(')
+        board.set_grid(self._left+6,self._top+8, '(')
+        board.set_grid(self._left+7,self._top+8, '_')
+        board.set_grid(self._left+8,self._top+8, '_')
+        for i in range(8):
+            board.set_grid(self._left+8, self._top + i + 1, '|') 
+    
+                                                                                                                                                                                                                                                                                                                                                                                
