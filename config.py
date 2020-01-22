@@ -4,21 +4,24 @@ from person import *
 from help_input import *
 from obstracle import *
 import time
+import sys
 # import board
 # import person
 # import obstracle
 # import help_input
 
-class System(Board, Din, Coins, Fire_Beams):
+class System(Board, Din, Coins, Fire_Beams, Power_booster):
     def __init__(self):
         self.score = 0
         self.board = Board()
         self.fire_beams = Fire_Beams(0, 0, self.board)
+        self.power = Power_booster(0,0, self.board)
         self.din = Din(0, 33, 5, self.board)
         self.coins = Coins(0, 0 , self.board)
         
     def run(self):
         self.board.create_scenery(self.din)
+        
         self.board.move_screen(self.din)
         self.din.move_right(self.board)
         
@@ -27,11 +30,37 @@ class System(Board, Din, Coins, Fire_Beams):
     ##    self.board.render(self)
     
     def check_collision(self):
-        for i in range(9):
-            for j in range(9):
+        x = False
+
+        for i in range(10):
+            for j in range(10):
                 if self.board.grid[self.din.top+i][self.din.left + j] == '$':
                     self.din.collect_coin()
-                    self.coins.remove_coin(self.board)
+                    self.coins.remove_coin(self.din.left + j, self.din.top + i, self.board)
+                    
+                if self.board.grid[self.din.top+i][self.din.left+j]  == '*':
+                    self.din.decrease_live(self.board)
+                    self.din.speed = 1
+                    self.din.boost_time = 0
+                    self.board.left = 0
+                    self.din.remove_din(self.board)
+                    self.din.left = 0
+                    self.din.top = 33
+                    x = True
+                
+                if self.board.grid[self.din.top+i][self.din.left+j] == '@':
+                    self.board.grid[self.din.top+i][self.din.left+j]= ' ' 
+                    self.din.boost_time = self.din.boost_time + 1
+                    self.din.speed = 2  
+                    
+                    # self.fire_beams.remove_beam(self.din.left, self.board)
+                    # self.din.remove_din(self.board)
+                    # self.din.left = self.board.left
+                    # self.din.top = self.board.height-17
+                    
+        # if coin == True:
+            
+        return x
         
     def render(self):
         for i in range(self.board.height - 8):
@@ -43,11 +72,13 @@ class System(Board, Din, Coins, Fire_Beams):
                 elif(self.board.grid[i][j] == '*'):
                     print(Fore.RED + self.board.grid[i][j] + Fore.RESET, end='')
                     # print(Style.RESET_ALL)
+                elif(self.board.grid[i][j] == '@'):
+                    print(Fore.BLACK + self.board.grid[i][j] + Fore.RESET, end='')
                 elif(self.board.grid[i][j] == '-'):
                     print(Fore.WHITE +self.board.grid[i][j] + Fore.RESET, end='')
                     # print(Style.RESET_ALL)
                 elif(self.board.grid[i][j] == '$'):
-                    print(Fore.YELLOW + self.board.grid[i][j], end='')
+                    print(Fore.YELLOW + self.board.grid[i][j] + Fore.RESET, end='')
                     # print(Style.RESET_ALL)
                 else:
                     print(Back.BLUE + self.board.grid[i][j], end='')
@@ -63,7 +94,7 @@ class System(Board, Din, Coins, Fire_Beams):
             for j in range(self.board.s_width):
                 # print(Back.GREEN + self.board.grid[i][j], end='')
                 
-                print(Back.GREEN + self.board.grid[i][j], end='')
+                print(Back.GREEN + self.board.grid[i][j] , end='')
                 
                 # print(Back.GREEN)
             print()
@@ -75,15 +106,33 @@ obj_system = System()
 # obj_system.render()
 obj_system.coins.put_coins(obj_system.board)
 obj_system.fire_beams.put_beams(obj_system.board)
+obj_system.power.create_power_booster(obj_system.board)
 orig_time = time.time()
 x = True
+gravity_t = 0
 while(x):
     print('\033[H')
+    if(obj_system.din.top < 33):
+        gravity_t += 0.2
+        acc = round(0.5 * gravity_t * gravity_t)
+        obj_system.din.remove_din(obj_system.board)
+        if(obj_system.din.top + 8 + acc <= obj_system.board.height - 9):
+            obj_system.din.top += acc
+        else:
+            obj_system.din.top = obj_system.board.height - 9 - 8
+    
     if time.time() - orig_time >= 0.15:
-        obj_system.check_collision()
+        is_collision = obj_system.check_collision()
+        obj_system.fire_beams.put_beams(obj_system.board)
         obj_system.run()
         obj_system.render()
         orig_time = time.time()
+        if obj_system.din.boost_time >= 0.15:
+            obj_system.din.boost_time -= 0.15
+        else:
+            obj_system.din.boost_time = 0
+            obj_system.din.speed = 1
+        
     # for i in range(10):
     #     for j in range(10):
     #         if obj_system.board.grid[obj_system.din.top+i][obj_system.din.left+j] == '$':
@@ -93,17 +142,33 @@ while(x):
     # obj_system.run()
     # obj_system.render()
     # orig_time = time.time()
-
+    
+        
     inp = get_input()
     if inp == 'd':
-        obj_system.din.move_right(obj_system.board)
+        is_collision = obj_system.check_collision()
+        if is_collision == False:
+            obj_system.din.move_right(obj_system.board)
     elif inp == 'a':
-        obj_system.din.move_left(obj_system.board)
+        is_collision = obj_system.check_collision()
+        if is_collision == False:
+            obj_system.din.move_left(obj_system.board)
     elif inp == 'w':
-        obj_system.din.jump(obj_system.board)
+        gravity_t = 0
+        is_collision = obj_system.check_collision()
+        if is_collision == False:
+            obj_system.din.jump(obj_system.board)
+            
     elif inp == 'q':
         quit()
         x = False
+    if obj_system.din.lives <= 0:
+        os.system('clear')
+        obj_system.render()
+        print('Game Over')
+        print("Score : " , obj_system.din.coins)
+        time.sleep(1)
+        sys.exit(0)
     # elif inp == 'x':
     #     obj_system.din.move_down(obj_system.board)
     

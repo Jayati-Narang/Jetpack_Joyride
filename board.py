@@ -23,22 +23,31 @@ class Board:
         self.reset = '\u001b[0m'
     
     def move_screen(self, din):
-        self.left = self.left + 1
-        self.grid[0][self.left+0] = 'C'
-        self.grid[0][self.left+1] = 'O'
-        self.grid[0][self.left+2] = 'I'
-        self.grid[0][self.left+3] = 'N'
-        self.grid[0][self.left+4] = 'S'
-        self.grid[0][self.left+6] =  str(din.coins % 10)
-        self.grid[0][self.left+5] = str(din.coins // 10)
+        self.left = self.left + din.speed
+        self.grid[0][self.left+0] = Fore.WHITE + 'C' + Fore.RESET
+        self.grid[0][self.left+1] = Fore.WHITE + 'O' + Fore.RESET
+        self.grid[0][self.left+2] = Fore.WHITE + 'I' + Fore.RESET
+        self.grid[0][self.left+3] = Fore.WHITE + 'N' + Fore.RESET
+        self.grid[0][self.left+4] = Fore.WHITE + 'S' + Fore.RESET
+        self.grid[0][self.left+5] = Fore.WHITE + '-' + Fore.RESET
+        self.grid[0][self.left+7] =  Fore.WHITE + str(din.coins % 10) + Fore.RESET 
+        self.grid[0][self.left+6] = Fore.WHITE + str(din.coins // 10) + Fore.RESET 
+        self.grid[0][self.left+8] = Fore.WHITE + ' ' + Fore.RESET
+        self.grid[0][self.left+9] = Fore.WHITE + 'L' + Fore.RESET
+        self.grid[0][self.left+10] = Fore.WHITE + 'I' + Fore.RESET
+        self.grid[0][self.left+11] = Fore.WHITE + 'V' + Fore.RESET
+        self.grid[0][self.left+12] = Fore.WHITE + 'E' + Fore.RESET
+        self.grid[0][self.left+13] = Fore.WHITE + 'S' + Fore.RESET
+        self.grid[0][self.left+14] = Fore.WHITE + str(din.lives) + Fore.RESET 
 
     def create_boundary(self, din):
         
         for i in range(self.width):
-            self.grid[self.height - 1][i] = "^"
+            # self.grid[self.height - 1][i] = Fore.WHITE + '^' + Fore.RESET
+            self.grid[self.height - 1][i] = '^'
         ### making sky above which the mad can't go
         for i in range(self.width):
-            self.grid[0][i] = self.blue + "-" 
+            self.grid[0][i] = Fore.WHITE + '-' + Fore.RESET 
         # self.grid[0][0] = 'C'
         # self.grid[0][1] = 'O'
         # self.grid[0][2] = 'I'
