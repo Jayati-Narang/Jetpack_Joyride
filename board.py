@@ -29,7 +29,7 @@ class Board:
         self.grid[0][self.left+2] = Fore.WHITE + 'I' + Fore.RESET
         self.grid[0][self.left+3] = Fore.WHITE + 'N' + Fore.RESET
         self.grid[0][self.left+4] = Fore.WHITE + 'S' + Fore.RESET
-        self.grid[0][self.left+5] = Fore.WHITE + '-' + Fore.RESET
+        self.grid[0][self.left+5] = Fore.WHITE + ':' + Fore.RESET
         self.grid[0][self.left+7] =  Fore.WHITE + str(din.coins % 10) + Fore.RESET 
         self.grid[0][self.left+6] = Fore.WHITE + str(din.coins // 10) + Fore.RESET 
         self.grid[0][self.left+8] = Fore.WHITE + ' ' + Fore.RESET
@@ -38,8 +38,20 @@ class Board:
         self.grid[0][self.left+11] = Fore.WHITE + 'V' + Fore.RESET
         self.grid[0][self.left+12] = Fore.WHITE + 'E' + Fore.RESET
         self.grid[0][self.left+13] = Fore.WHITE + 'S' + Fore.RESET
-        self.grid[0][self.left+14] = Fore.WHITE + str(din.lives) + Fore.RESET 
-
+        self.grid[0][self.left+14] = Fore.WHITE + ':' + Fore.RESET
+        self.grid[0][self.left+15] = Fore.WHITE + str(din.lives) + Fore.RESET
+        self.grid[0][self.left+16] = Fore.WHITE + ' ' + Fore.RESET 
+        self.grid[0][self.left+17] = Fore.WHITE + 'S' + Fore.RESET
+        self.grid[0][self.left+18] = Fore.WHITE + 'C' + Fore.RESET
+        self.grid[0][self.left+19] = Fore.WHITE + 'O' + Fore.RESET
+        self.grid[0][self.left+20] = Fore.WHITE + 'R' + Fore.RESET
+        self.grid[0][self.left+21] = Fore.WHITE + 'E' + Fore.RESET
+        self.grid[0][self.left+22] = Fore.WHITE + 'S' + Fore.RESET
+        self.grid[0][self.left+23] = Fore.WHITE + ':' + Fore.RESET
+        self.grid[0][self.left+25] = Fore.WHITE + str((din.coins + din.enemy_killed * 2)%10) + Fore.RESET
+        self.grid[0][self.left+24] = Fore.WHITE + str((din.coins + din.enemy_killed * 2)//10) + Fore.RESET
+        self.grid[0][self.left+26] = Fore.WHITE + ' ' + Fore.RESET
+        
     def create_boundary(self, din):
         
         for i in range(self.width):

@@ -96,7 +96,12 @@ class Fire_Beams:
             for j in range(left - 20, left + 20):
                 if board.grid[i][j] == '*':
                     board.grid[i][j] = ' '
-            
+                    
+    def remove_beam_only_right(self, left, board):
+        for i in range(50):
+            for j in range(left - 30, left + 30):
+                if board.grid[i][j] == '*':
+                    board.grid[i][j] =' '
             
 class Power_booster:
     def __init__(self,x,y,board):
@@ -121,7 +126,8 @@ class Power_booster:
         board.grid[29][1302]='@'
 
 
-class Magnet:
+class Magnet:                                 ### The object will start attracting in range +-40
+
     def __init__(self, left, top, board):
         self.left = left
         self.top = top
@@ -137,4 +143,7 @@ class Magnet:
             
     def put_magnet(self, board):
         self.create_magnet(330, 2, board)
+        
+        
+        
         

@@ -15,6 +15,7 @@ class  Din(Person):
         self.speed = 1
         self.boost_time = 0
         self.shield_on = 0 ### when sheild_on is 1 then shield is on 
+        self.enemy_killed = 0
         
     def create_din(self, board):
         if self.shield_on == 0: 
@@ -99,7 +100,8 @@ class  Din(Person):
     #     if board.grid[self.top+4][self.left+8] == '.':
     #         board.grid[self.top+4][self.left+8] = ' '
     
-    
+    def enemy_killed_increase(self):
+        self.enemy_killed += 1
     
                     
     def remove_din(self, board):

@@ -50,6 +50,7 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet):
                         self.din.top = 33
                         self.fire_beams.put_beams(obj_system.board)
                     else:
+                        self.din.enemy_killed_increase()
                         self.fire_beams.remove_beam(self.din.left, self.board)
 
                     x = True
@@ -88,6 +89,8 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet):
                     # print(Style.RESET_ALL)
                 elif(self.board.grid[i][j] == '|'):
                     print(Fore.CYAN + self.board.grid[i][j] + Fore.RESET, end='')
+                elif(self.board.grid[i][j] == 'o'):
+                    print(Fore.MAGENTA + self.board.grid[i][j] + Fore.RESET, end='')
                 else:
                     print(Back.BLUE + self.board.grid[i][j], end='')
                     # print(Style.RESET_ALL)
@@ -129,16 +132,18 @@ orig_time = time.time()
 x = True
 gravity_t = 0
 
-
+object_yes = 0
 
 #### For shield I have first shield_on in din object, then I have shield_start_time and shield_gap_time and shield_gap_on 
 shield_start_time = 0
 shield_gap_time = 0
 shield_gap_on = 0
 magnet_on = 0
+co = 0
+
 while(x):
     print('\033[H')
-    # print("sheild_start" + str(sheild_start))
+    # print("sheild_start" + str(sheild_start)
     # print("Sheild_gap" + str(sheild_gap))
     # print("Sheild_on" + str(obj_system.din.sheild_on))
     if obj_system.din.left >= 210 and obj_system.din.left <= 335 and magnet_on == 0:   ##move right
@@ -195,6 +200,15 @@ while(x):
     if time.time() - orig_time >= 0.15:
         is_collision = obj_system.check_collision()
         # obj_system.fire_beams.put_beams(obj_system.board)
+        if object_yes == 1: 
+            object_yes = 2
+        else:
+            for i in range(50):
+                for j in range(co-200, co + 200):
+                    if obj_system.board.grid[i][j] == 'o':
+                        obj_system.board.grid[i][j] = ' '
+            
+            object_yes = 0
         obj_system.run()
         obj_system.render()
         orig_time = time.time()
@@ -234,6 +248,20 @@ while(x):
         is_collision = obj_system.check_collision()
         if is_collision == False:
             obj_system.din.jump(obj_system.board)
+            
+    elif inp == 'f': ##fire bullet
+        object_yes = 1 
+        for i in range(90):
+            if obj_system.board.grid[obj_system.din.top +4][obj_system.din.left + 9 + i] == '*':
+                co = obj_system.din.left + 9 + i
+                obj_system.din.enemy_killed_increase()
+                obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+        for i in range(30):
+            obj_system.board.grid[obj_system.din.top + 4][obj_system.din.left + 9 + i] =  'o'
+        # obj_system.render()
+        # for i in range(30):
+        #     obj_system.board.grid[obj_system.din.top + 4][obj_system.din.left + 9 + i] =  ' '
+            
     elif inp == ' ': 
         if obj_system.din.shield_on == 0 and shield_gap_on == 0:
             obj_system.din.shield_on = 1
