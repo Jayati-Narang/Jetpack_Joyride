@@ -10,7 +10,7 @@ import sys
 # import obstracle
 # import help_input
 
-class System(Board, Din, Coins, Fire_Beams, Power_booster):
+class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet):
     def __init__(self):
         self.score = 0
         self.board = Board()
@@ -18,10 +18,11 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster):
         self.power = Power_booster(0,0, self.board)
         self.din = Din(0, 33, 5, self.board)
         self.coins = Coins(0, 0 , self.board)
+        self.magnet = Magnet(330, 2, self.board)
         
     def run(self):
         self.board.create_scenery(self.din)
-        
+        self.magnet.put_magnet(self.board)
         self.board.move_screen(self.din)
         self.din.move_right(self.board)
         
@@ -85,6 +86,8 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster):
                 elif(self.board.grid[i][j] == '$'):
                     print(Fore.YELLOW + self.board.grid[i][j] + Fore.RESET, end='')
                     # print(Style.RESET_ALL)
+                elif(self.board.grid[i][j] == '|'):
+                    print(Fore.CYAN + self.board.grid[i][j] + Fore.RESET, end='')
                 else:
                     print(Back.BLUE + self.board.grid[i][j], end='')
                     # print(Style.RESET_ALL)
@@ -105,6 +108,15 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster):
             print()
             # print(Style.RESET_ALL)
             # print(Style.RESET_ALL)
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
 obj_system = System()
 # obj_system.run()
@@ -112,6 +124,7 @@ obj_system = System()
 obj_system.coins.put_coins(obj_system.board)
 obj_system.fire_beams.put_beams(obj_system.board)
 obj_system.power.create_power_booster(obj_system.board)
+obj_system.magnet.put_magnet(obj_system.board)
 orig_time = time.time()
 x = True
 gravity_t = 0
@@ -122,11 +135,25 @@ gravity_t = 0
 shield_start_time = 0
 shield_gap_time = 0
 shield_gap_on = 0
+magnet_on = 0
 while(x):
     print('\033[H')
     # print("sheild_start" + str(sheild_start))
     # print("Sheild_gap" + str(sheild_gap))
     # print("Sheild_on" + str(obj_system.din.sheild_on))
+    if obj_system.din.left >= 210 and obj_system.din.left <= 335 and magnet_on == 0:   ##move right
+        obj_system.din.move_right(obj_system.board)
+        magnet_on = 1
+        #obj_system.din.move_right(obj_system.board)
+    elif obj_system.din.left >= 450 and obj_system.din.left <= 410 and magnet_on == 0:
+        obj_system.din.move_left(obj_system.board)
+        magnet_on = 1
+        #obj_system.din.move_left(obj_system.board)
+    elif magnet_on == 1:
+        magnet_on = 0
+        
+    
+    
     
     if time.time() - shield_start_time > 10 and obj_system.din.shield_on == 1:
         shield_gap_time = time.time()
@@ -153,6 +180,18 @@ while(x):
         else:
             obj_system.din.top = obj_system.board.height - 9 - 8
     
+    # if time.time() - orig_time >= 0.15:
+    #     is_collision = obj_system.check_collision()
+    #     # obj_system.fire_beams.put_beams(obj_system.board)
+    #     obj_system.run()
+    #     obj_system.render()
+    #     orig_time = time.time()
+    #     if obj_system.din.boost_time >= 0.15:
+    #         obj_system.din.boost_time -= 0.15
+    #     else:
+    #         obj_system.din.boost_time = 0
+    #         obj_system.din.speed = 1
+    
     if time.time() - orig_time >= 0.15:
         is_collision = obj_system.check_collision()
         # obj_system.fire_beams.put_beams(obj_system.board)
@@ -164,7 +203,7 @@ while(x):
         else:
             obj_system.din.boost_time = 0
             obj_system.din.speed = 1
-        
+    
     # for i in range(10):
     #     for j in range(10):
     #         if obj_system.board.grid[obj_system.din.top+i][obj_system.din.left+j] == '$':
@@ -179,10 +218,15 @@ while(x):
     inp = get_input()
     if inp == 'd':
         is_collision = obj_system.check_collision()
+        # if obj_system.din.left >= 260 and obj_system.din.left <= 335:   ##move right
+        #     obj_system.din.move_right(obj_system.board)
+            
         if is_collision == False:
             obj_system.din.move_right(obj_system.board)
     elif inp == 'a':
         is_collision = obj_system.check_collision()
+        # if obj_system.din.left >= 260 and obj_system.din.left <= 335:   ##move right
+        #     obj_system.din.move_right(obj_system.board)
         if is_collision == False:
             obj_system.din.move_left(obj_system.board)
     elif inp == 'w':

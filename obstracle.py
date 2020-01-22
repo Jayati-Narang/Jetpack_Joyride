@@ -119,3 +119,22 @@ class Power_booster:
         board.grid[29][1001]='@'
         board.grid[38][1207]='@'
         board.grid[29][1302]='@'
+
+
+class Magnet:
+    def __init__(self, left, top, board):
+        self.left = left
+        self.top = top
+    
+    def create_magnet(self, left, top, board):
+        for i in range(1, 5):
+            board.grid[self.top+i][self.left] = '|'
+            board.grid[self.top+i][self.left+1] = '|'
+            board.grid[self.top+i][self.left+8] = '|'
+            board.grid[self.top+i][self.left+9] = '|'
+        for j in range(10):
+            board.grid[self.top][self.left + j] = '|'
+            
+    def put_magnet(self, board):
+        self.create_magnet(330, 2, board)
+        

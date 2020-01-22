@@ -17,8 +17,13 @@ now for height 8 from bottom will be ground
 
 
 
+shield_start       shield_gap 		
+	0					0
+//now press the space then
+	10 					0			
+	now constantly decrease the shield_start also if space is pressed when shield_start > 0 || shield_gap > 0 then nothing will happen
 
-
+	0 as soon as shield_start == 0 and shield_on is 1 then make it 0 and then shield_gap = 60 
 
 
  if shield is on the 
@@ -58,4 +63,17 @@ top +3*
 
 
 
+0123456789
+||||||||||0
+||		||1
+||		||2
+||		||3
+||		||4
 
+
+
+### The object will start attracting in range +-40
+now when
+
+330 - 120 = 210
+330 + 120 = 450
