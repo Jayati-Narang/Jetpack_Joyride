@@ -14,26 +14,54 @@ class  Din(Person):
         self.s_time = round(time.time())
         self.speed = 1
         self.boost_time = 0
+        self.shield_on = 0 ### when sheild_on is 1 then shield is on 
         
     def create_din(self, board):
-        board.grid[self.top][self.left+4] = '.'
-        board.grid[self.top+1][self.left+3] = '.'
-        board.grid[self.top+1][self.left+5] = '.'
+        if self.shield_on == 0: 
+            board.grid[self.top][self.left+4] = '.'
+            board.grid[self.top+1][self.left+3] = '.'
+            board.grid[self.top+1][self.left+5] = '.'
         # board.grid[self.top+2][self.left+2] = '.'
         # board.grid[self.top+2][self.left+3] = '.'
         # board.grid[self.top+2][self.left+4] = '.'
         # board.grid[self.top+2][self.left+5] = '.'
         # board.grid[self.top+2][self.left+6] = '.'
-        for i in range(2,6):
-            for j in range(2, 7):
-                board.grid[self.top+i][self.left+j] = '.'
-        for i in range(6, 9):
-            board.grid[self.top+i][self.left+3] = '.'
-            board.grid[self.top+i][self.left+5] = '.'
-        board.grid[self.top+3][self.left+1] = '.'
-        board.grid[self.top+4][self.left] = '.'
-        board.grid[self.top+3][self.left+7] = '.'
-        board.grid[self.top+4][self.left+8] = '.'
+            for i in range(2,6):
+                for j in range(2, 7):
+                    board.grid[self.top+i][self.left+j] = '.'
+            for i in range(6, 9):
+                board.grid[self.top+i][self.left+3] = '.'
+                board.grid[self.top+i][self.left+5] = '.'
+            board.grid[self.top+3][self.left+1] = '.'
+            board.grid[self.top+4][self.left] = '.'
+            board.grid[self.top+3][self.left+7] = '.'
+            board.grid[self.top+4][self.left+8] = '.'
+
+        elif self.shield_on == 1:
+            for j in range(4):
+                board.grid[self.top + j][self.left + 8] = '.'
+            board.grid[self.top][self.left+4] = '.'
+            board.grid[self.top+1][self.left+3] = '.'
+            board.grid[self.top+1][self.left+5] = '.'
+        # board.grid[self.top+2][self.left+2] = '.'
+        # board.grid[self.top+2][self.left+3] = '.'
+        # board.grid[self.top+2][self.left+4] = '.'
+        # board.grid[self.top+2][self.left+5] = '.'
+        # board.grid[self.top+2][self.left+6] = '.'
+            for i in range(2,6):
+                for j in range(2, 7):
+                    board.grid[self.top+i][self.left+j] = '.'
+            for i in range(6, 9):
+                board.grid[self.top+i][self.left+3] = '.'
+                board.grid[self.top+i][self.left+5] = '.'
+            board.grid[self.top+3][self.left+1] = '.'
+            board.grid[self.top+4][self.left] = '.'
+            board.grid[self.top+3][self.left+7] = '.'
+            board.grid[self.top+4][self.left+8] = '.'
+    
+    
+
+    
                         
         # for i in range(2):
         #     for j in range (2):
@@ -75,6 +103,9 @@ class  Din(Person):
     
                     
     def remove_din(self, board):
+        if(self.shield_on):
+            for j in range(4):
+                board.grid[self.top + j][self.left + 8] = ' '
         board.grid[self.top][self.left+4] = ' '
         board.grid[self.top+1][self.left+3] = ' '
         board.grid[self.top+1][self.left+5] = ' '
@@ -94,7 +125,39 @@ class  Din(Person):
         board.grid[self.top+3][self.left+7] = ' '
         board.grid[self.top+4][self.left+8] = ' '
         
+    def remove_din_on_collision(self, board):
         
+        if board.grid[self.top][self.left+4] == '.':
+            board.grid[self.top][self.left+4] = ' '
+        if board.grid[self.top+1][self.left+3] == '.':
+            board.grid[self.top+1][self.left+3] = ' '
+        if board.grid[self.top+1][self.left+5] == '.':
+            board.grid[self.top+1][self.left+5] = '.'
+        
+        # board.grid[self.top+2][self.left+2] = '.'
+        # board.grid[self.top+2][self.left+3] = '.'
+        # board.grid[self.top+2][self.left+4] = '.'
+        # board.grid[self.top+2][self.left+5] = '.'
+        # board.grid[self.top+2][self.left+6] = '.'
+        for i in range(2,6):
+            for j in range(2, 7):
+                if board.grid[self.top+i][self.left+j] == '.':
+                    board.grid[self.top+i][self.left+j] = ' '
+        for i in range(6, 9):
+            if board.grid[self.top+i][self.left+3] == '.':
+                board.grid[self.top+i][self.left+3] = ' '
+            if board.grid[self.top+i][self.left+5] == '.':
+                board.grid[self.top+i][self.left+5] = ' '
+        if board.grid[self.top+3][self.left+1] == '.':
+            board.grid[self.top+3][self.left+1] = ' '
+        if board.grid[self.top+4][self.left] == '.':
+            board.grid[self.top+4][self.left] = ' '
+        if board.grid[self.top+3][self.left+7] == '.':
+            board.grid[self.top+3][self.left+7] = ' '
+        if board.grid[self.top+4][self.left+8] == '.':
+            board.grid[self.top+4][self.left+8] = ' '
+    
+      
     def decrease_live(self, board):
         self.lives -= 1
 ## The screen will move continuously therefore when mario reaches the border then we have to push mario to right but this condition won't be put here ## 

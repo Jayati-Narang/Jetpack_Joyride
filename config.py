@@ -39,13 +39,18 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster):
                     self.coins.remove_coin(self.din.left + j, self.din.top + i, self.board)
                     
                 if self.board.grid[self.din.top+i][self.din.left+j]  == '*':
-                    self.din.decrease_live(self.board)
-                    self.din.speed = 1
-                    self.din.boost_time = 0
-                    self.board.left = 0
-                    self.din.remove_din(self.board)
-                    self.din.left = 0
-                    self.din.top = 33
+                    if(self.din.shield_on == 0):
+                        self.din.decrease_live(self.board)
+                        self.din.speed = 1
+                        self.din.boost_time = 0
+                        self.board.left = 0
+                        self.din.remove_din_on_collision(self.board)
+                        self.din.left = 0
+                        self.din.top = 33
+                        self.fire_beams.put_beams(obj_system.board)
+                    else:
+                        self.fire_beams.remove_beam(self.din.left, self.board)
+
                     x = True
                 
                 if self.board.grid[self.din.top+i][self.din.left+j] == '@':
@@ -110,8 +115,35 @@ obj_system.power.create_power_booster(obj_system.board)
 orig_time = time.time()
 x = True
 gravity_t = 0
+
+
+
+#### For shield I have first shield_on in din object, then I have shield_start_time and shield_gap_time and shield_gap_on 
+shield_start_time = 0
+shield_gap_time = 0
+shield_gap_on = 0
 while(x):
     print('\033[H')
+    # print("sheild_start" + str(sheild_start))
+    # print("Sheild_gap" + str(sheild_gap))
+    # print("Sheild_on" + str(obj_system.din.sheild_on))
+    
+    if time.time() - shield_start_time > 10 and obj_system.din.shield_on == 1:
+        shield_gap_time = time.time()
+        obj_system.din.shield_on = 0
+        shield_start_time = 0
+        shield_gap_on = 1
+        obj_system.din.remove_din(obj_system.board)
+        
+    if time.time() - shield_gap_time > 15 and shield_gap_on == 1:
+        shield_gap_on = 0
+        
+     
+    # if sheild_start == 0 and obj_system.din.sheild_on == 1:
+    #     sheild_gap = 60
+    #     obj_system.din.sheild_on = 0
+        
+         
     if(obj_system.din.top < 33):
         gravity_t += 0.2
         acc = round(0.5 * gravity_t * gravity_t)
@@ -123,7 +155,7 @@ while(x):
     
     if time.time() - orig_time >= 0.15:
         is_collision = obj_system.check_collision()
-        obj_system.fire_beams.put_beams(obj_system.board)
+        # obj_system.fire_beams.put_beams(obj_system.board)
         obj_system.run()
         obj_system.render()
         orig_time = time.time()
@@ -158,7 +190,19 @@ while(x):
         is_collision = obj_system.check_collision()
         if is_collision == False:
             obj_system.din.jump(obj_system.board)
-            
+    elif inp == ' ': 
+        if obj_system.din.shield_on == 0 and shield_gap_on == 0:
+            obj_system.din.shield_on = 1
+            shield_start_time = time.time()
+            obj_system.din.create_din(obj_system.board)
+        
+        # if sheild_start == 10 and obj_system.din.sheild_on == 0:
+        #     obj_system.din.sheild_on = 1
+        #     sheild_start = 10
+        #     obj_system.din.create_din(obj_system.board)
+        
+        
+        
     elif inp == 'q':
         quit()
         x = False
