@@ -19,7 +19,7 @@ class Coins:
             board.set_grid(left+i, top+1, '$')
     
     def put_coins(self, board):
-        for i in range(0, 1200, 200):
+        for i in range(0, 820, 200):
             
             x = random.randint(13, 30) ##height
             y = random.randint(5, 150)  ##width
@@ -64,12 +64,12 @@ class Fire_Beams:
         self.create_slanting_beams(720, 12, board)
         self.create_horizontal_beams(780, 8, board)
         self.create_vertical_beams(840, 24, board)
-        self.create_slanting_beams(900, 12, board)
-        self.create_horizontal_beams(960, 8, board)
-        self.create_vertical_beams(1120, 24, board)
-        self.create_slanting_beams(1180, 12, board)
-        self.create_horizontal_beams(1240, 8, board)
-        self.create_vertical_beams(1300, 24, board)
+        # self.create_slanting_beams(900, 12, board)
+        # self.create_horizontal_beams(960, 8, board)
+        # self.create_vertical_beams(1120, 24, board)
+        # self.create_slanting_beams(1180, 12, board)
+        # self.create_horizontal_beams(1240, 8, board)
+        # self.create_vertical_beams(1300, 24, board)
        
         # self.create_horizontal_beams(780, 8, board)
         # self.create_vertical_beams(810, 24, board)
@@ -145,10 +145,10 @@ class Power_booster:
         board.set_grid(637, 27, '@')
         board.set_grid(739, 13, '@')
         board.set_grid(803, 10, '@')
-        board.set_grid(920, 31, '@')
-        board.set_grid(1001, 29, '@')
-        board.set_grid(1207, 38, '@')
-        board.set_grid(1302, 29, '@')
+        # board.set_grid(920, 31, '@')
+        # board.set_grid(1001, 29, '@')
+        # board.set_grid(1207, 38, '@')
+        # board.set_grid(1302, 29, '@')
       
         
         

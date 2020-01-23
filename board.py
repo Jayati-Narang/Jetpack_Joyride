@@ -30,8 +30,10 @@ class Board:
     
     
     
-    def move_screen(self, din):
-        self.__left = self.__left + din.get_speed()
+    def move_screen(self, din, t, enemy):
+        if t == 0:
+            self.__left = self.__left + din.get_speed()
+        
         self.__grid[0][self.__left+0] = Fore.WHITE + 'C' + Fore.RESET
         self.__grid[0][self.__left+1] = Fore.WHITE + 'O' + Fore.RESET
         self.__grid[0][self.__left+2] = Fore.WHITE + 'I' + Fore.RESET
@@ -46,19 +48,72 @@ class Board:
         self.__grid[0][self.__left+11] = Fore.WHITE + 'V' + Fore.RESET
         self.__grid[0][self.__left+12] = Fore.WHITE + 'E' + Fore.RESET
         self.__grid[0][self.__left+13] = Fore.WHITE + 'S' + Fore.RESET
-        self.__grid[0][self.__left+14] = Fore.WHITE + ':' + Fore.RESET
-        self.__grid[0][self.__left+15] = Fore.WHITE + str(din.get_lives()) + Fore.RESET
-        self.__grid[0][self.__left+16] = Fore.WHITE + ' ' + Fore.RESET 
-        self.__grid[0][self.__left+17] = Fore.WHITE + 'S' + Fore.RESET
-        self.__grid[0][self.__left+18] = Fore.WHITE + 'C' + Fore.RESET
-        self.__grid[0][self.__left+19] = Fore.WHITE + 'O' + Fore.RESET
+        self.__grid[0][self.__left+14] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+15] = Fore.WHITE + 'P' + Fore.RESET
+        self.__grid[0][self.__left+16] = Fore.WHITE + 'L' + Fore.RESET
+        self.__grid[0][self.__left+17] = Fore.WHITE + 'A' + Fore.RESET
+        self.__grid[0][self.__left+18] = Fore.WHITE + 'Y' + Fore.RESET
+        self.__grid[0][self.__left+19] = Fore.WHITE + 'E' + Fore.RESET
         self.__grid[0][self.__left+20] = Fore.WHITE + 'R' + Fore.RESET
-        self.__grid[0][self.__left+21] = Fore.WHITE + 'E' + Fore.RESET
-        self.__grid[0][self.__left+22] = Fore.WHITE + 'S' + Fore.RESET
-        self.__grid[0][self.__left+23] = Fore.WHITE + ':' + Fore.RESET
-        self.__grid[0][self.__left+25] = Fore.WHITE + str((din.get_coins() + din.get_enemy_killed() * 2)%10) + Fore.RESET
-        self.__grid[0][self.__left+24] = Fore.WHITE + str((din.get_coins() + din.get_enemy_killed() * 2)//10) + Fore.RESET
-        self.__grid[0][self.__left+26] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+21] = Fore.WHITE + ':' + Fore.RESET
+        self.__grid[0][self.__left+22] = Fore.WHITE + str(din.get_lives()) + Fore.RESET
+        self.__grid[0][self.__left+23] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+24] = Fore.WHITE + 'L' + Fore.RESET
+        self.__grid[0][self.__left+25] = Fore.WHITE + 'I' + Fore.RESET
+        self.__grid[0][self.__left+26] = Fore.WHITE + 'V' + Fore.RESET
+        self.__grid[0][self.__left+27] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+28] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+29] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+30] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+31] = Fore.WHITE + 'N' + Fore.RESET
+        self.__grid[0][self.__left+32] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+33] = Fore.WHITE + 'M' + Fore.RESET
+        self.__grid[0][self.__left+34] = Fore.WHITE + 'Y' + Fore.RESET
+        self.__grid[0][self.__left+35] = Fore.WHITE + ':' + Fore.RESET
+        self.__grid[0][self.__left+36] = Fore.WHITE + str(enemy.get_lives()) + Fore.RESET 
+        
+        self.__grid[0][self.__left+37] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+38] = Fore.WHITE + 'C' + Fore.RESET
+        self.__grid[0][self.__left+39] = Fore.WHITE + 'O' + Fore.RESET
+        self.__grid[0][self.__left+40] = Fore.WHITE + 'R' + Fore.RESET
+        self.__grid[0][self.__left+41] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+42] = Fore.WHITE + 'S' + Fore.RESET
+        self.__grid[0][self.__left+43] = Fore.WHITE + ':' + Fore.RESET
+        self.__grid[0][self.__left+45] = Fore.WHITE + str((din.get_coins() + din.get_enemy_killed() * 2)%10) + Fore.RESET
+        self.__grid[0][self.__left+44] = Fore.WHITE + str((din.get_coins() + din.get_enemy_killed() * 2)//10) + Fore.RESET
+        self.__grid[0][self.__left+46] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+47] = Fore.WHITE + 'T' + Fore.RESET
+        self.__grid[0][self.__left+48] = Fore.WHITE + 'I' + Fore.RESET
+        self.__grid[0][self.__left+49] = Fore.WHITE + 'M' + Fore.RESET
+        self.__grid[0][self.__left+50] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+51] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+52] = Fore.WHITE + 'L' + Fore.RESET
+        self.__grid[0][self.__left+53] = Fore.WHITE + 'E' + Fore.RESET
+        self.__grid[0][self.__left+54] = Fore.WHITE + 'F' + Fore.RESET
+        self.__grid[0][self.__left+55] = Fore.WHITE + 'T' + Fore.RESET
+        self.__grid[0][self.__left+56] = Fore.WHITE + ' ' + Fore.RESET
+        self.__grid[0][self.__left+57] = Fore.WHITE + str((din.get_remaining_time() // 100)) + Fore.RESET
+        self.__grid[0][self.__left+58] = Fore.WHITE + str((din.get_remaining_time() % 100)//10) + Fore.RESET
+        self.__grid[0][self.__left+59] = Fore.WHITE + str((din.get_remaining_time() % 10))+ Fore.RESET
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
     def create_boundary(self):
         

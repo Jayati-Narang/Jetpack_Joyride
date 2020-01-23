@@ -17,12 +17,19 @@ class Person:
     def get_left(self):
         return self._left
     def get_top(self):
-        return self._top   
-      
+        return self._top 
+    def set_lives(self, x):
+        self._lives = x 
+        
+    def jump(self):                         
+        self._top = self._top - 1
+    
+    
 class  Din(Person):
-    def __init__(self, left, top, lives, board):
+    def __init__(self, left, top, lives, time, board):
         super().__init__(left, top, lives, board)
-        self.__s_time = round(time.time())
+       
+        self.__remaining_time = time
         self.__speed = 1
         self.__boost_time = 0
         self.__shield_on = 0 ### when sheild_on is 1 then shield is on 
@@ -125,8 +132,7 @@ class  Din(Person):
     #     if board.grid[self.top+4][self.left+8] == '.':
     #         board.grid[self.top+4][self.left+8] = ' '
     
-    def enemy_killed_increase(self):
-        self.__enemy_killed += 1
+
     
                     
     def remove_din(self, board):
@@ -184,7 +190,7 @@ class  Din(Person):
             
         grid = board.get_grid()
             
-        if board.grid[self._top+1][self._left+5] == '.':
+        if grid[self._top+1][self._left+5] == '.':
             # board.grid[self._top+1][self._left+5] = '.'
             board.set_grid(self._left+5, self._top + 1, ' ')
         grid = board.get_grid()          
@@ -235,7 +241,7 @@ class  Din(Person):
             self._left = self._left - self.__speed
                 
     def move_right(self, board):
-        if self._left+8 != 1399 - self.__speed and self._left+9 <= board.get_left()+200 - self.__speed: 
+        if self._left+8 != 920 - self.__speed and self._left+9 <= board.get_left()+200 - self.__speed: 
             self.remove_din(board)     
             self._left = self._left + self.__speed
     def jump(self, board):
@@ -258,8 +264,13 @@ class  Din(Person):
         self.__boost_time = x
 
     def set_shield_on(self, x):
-        self.__shield_on = x  
+        self.__shield_on = x
+          
+    def get_remaining_time(self):
+        return self.__remaining_time
     
+    def set_remaining_time(self, x):
+        self.__remaining_time = x
               
         
     # def move_down(self, board):
@@ -314,7 +325,8 @@ class  Din(Person):
     def collect_coin(self):
         self._coins = self._coins + 1
         
-        
+    def enemy_killed_increase(self):
+        self.__enemy_killed += 1   
         
         
         
@@ -324,29 +336,59 @@ class Enemy(Person):
         super().__init__(left, top, lives, board)
         self.__s_time = round(time.time())
         self.__speed = 1
+
     
     def create_enemy(self, board):
         board.set_grid(self._left,self._top+4, '{')
         board.set_grid(self._left+1,self._top+4, 'D')
         board.set_grid(self._left+2,self._top+4, '}')
-        board.set_grid(self._left+2,self._top+3, '.')
+        board.set_grid(self._left+2,self._top+3, ':')
         board.set_grid(self._left+2,self._top+5, '_')
-        board.set_grid(self._left+3,self._top+2, '.')
-        board.set_grid(self._left+4,self._top+1, '(')
-        board.set_grid(self._left+5,self._top+1, 'o')
-        board.set_grid(self._left+6,self._top+1, 'o')
-        board.set_grid(self._left+8,self._top+1, '|')
-        board.set_grid(self._left+5,self._top, '(') 
+        board.set_grid(self._left+3,self._top+2, ':')
+        board.set_grid(self._left+4,self._top+1, '{')
+        board.set_grid(self._left+5,self._top+1, 'O')
+        board.set_grid(self._left+6,self._top+1, 'O')
+        board.set_grid(self._left+8,self._top+1, '!')
+        board.set_grid(self._left+5,self._top, '{') 
         board.set_grid(self._left+6,self._top, ',')
         board.set_grid(self._left+7,self._top, ',')
-        board.set_grid(self._left+8,self._top, ')')  
+        board.set_grid(self._left+8,self._top, '}')  
         board.set_grid(self._left+3,self._top+5, '_')
         board.set_grid(self._left+4,self._top+6, '_')
-        board.set_grid(self._left+5,self._top+7, '(')
-        board.set_grid(self._left+6,self._top+8, '(')
+        board.set_grid(self._left+5,self._top+7, '{')
+        board.set_grid(self._left+6,self._top+8, '{')
         board.set_grid(self._left+7,self._top+8, '_')
         board.set_grid(self._left+8,self._top+8, '_')
         for i in range(8):
-            board.set_grid(self._left+8, self._top + i + 1, '|') 
+            board.set_grid(self._left+8, self._top + i + 1, '!') 
     
-                                                                                                                                                                                                                                                                                                                                                                                
+    def remove_enemy(self, board):
+        board.set_grid(self._left,self._top+4, ' ')
+        board.set_grid(self._left+1,self._top+4, ' ')
+        board.set_grid(self._left+2,self._top+4, ' ')
+        board.set_grid(self._left+2,self._top+3, ' ')
+        board.set_grid(self._left+2,self._top+5, ' ')
+        board.set_grid(self._left+3,self._top+2, ' ')
+        board.set_grid(self._left+4,self._top+1, ' ')
+        board.set_grid(self._left+5,self._top+1, ' ')
+        board.set_grid(self._left+6,self._top+1, ' ')
+        board.set_grid(self._left+8,self._top+1, ' ')
+        board.set_grid(self._left+5,self._top, ' ') 
+        board.set_grid(self._left+6,self._top, ' ')
+        board.set_grid(self._left+7,self._top, ' ')
+        board.set_grid(self._left+8,self._top, ' ')  
+        board.set_grid(self._left+3,self._top+5, ' ')
+        board.set_grid(self._left+4,self._top+6, ' ')
+        board.set_grid(self._left+5,self._top+7, ' ')
+        board.set_grid(self._left+6,self._top+8, ' ')
+        board.set_grid(self._left+7,self._top+8, ' ')
+        board.set_grid(self._left+8,self._top+8, ' ')
+        for i in range(8):
+            board.set_grid(self._left+8, self._top + i + 1, ' ')
+    
+    
+    def jump(self, board):
+        self.remove_enemy(board)
+        if self._top > self.__speed:
+            self._top = self._top - 1
+                                                                                                                                                                                                                                                                                                                                                                                       

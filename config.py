@@ -16,15 +16,15 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet, Enemy):
         self.board = Board()
         self.fire_beams = Fire_Beams(0, 0, self.board)
         self.power = Power_booster(0,0, self.board)
-        self.din = Din(0, 33, 5, self.board)
+        self.din = Din(0, 33, 5, 500, self.board)
         self.coins = Coins(0, 0 , self.board)
         self.magnet = Magnet(330, 2, self.board)
-        self.enemy = Enemy(45, 20,5, self.board)
+        self.enemy = Enemy(980, 33,5, self.board)  ##change this to 980
         
     def run(self):
         self.board.create_scenery()
         self.magnet.put_magnet(self.board)
-        self.board.move_screen(self.din)
+        self.board.move_screen(self.din, 0, self.enemy)
         self.din.move_right(self.board)
         
         self.din.create_din(self.board)
@@ -97,6 +97,8 @@ class System(Board, Din, Coins, Fire_Beams, Power_booster, Magnet, Enemy):
                     print(Fore.CYAN + grid[i][j] + Fore.RESET, end='')
                 elif(grid[i][j] == 'o'):
                     print(Fore.MAGENTA + grid[i][j] + Fore.RESET, end='')
+                elif(grid[i][j] == '<'):
+                    print(Fore.YELLOW + grid[i][j] + Fore.RESET, end= '')
                 else:
                     print(Back.BLUE + grid[i][j], end='')
                     # print(Style.RESET_ALL)
@@ -146,12 +148,16 @@ shield_gap_time = 0
 shield_gap_on = 0
 magnet_on = 0
 co = 0
-
+ene = 0
+s_time = time.time()
 while(x):
     print('\033[H')
     # print("sheild_start" + str(sheild_start)
     # print("Sheild_gap" + str(sheild_gap))
     # print("Sheild_on" + str(obj_system.din.sheild_on))
+    obj_system.din.set_remaining_time(round(700 - (time.time() - s_time))) 
+    
+     
     if obj_system.din.get_left() >= 210 and obj_system.din.get_left() <= 335 and magnet_on == 0:   ##move right
         obj_system.din.move_right(obj_system.board)
         magnet_on = 1
@@ -299,8 +305,222 @@ while(x):
         sys.exit(0)
     # elif inp == 'x':
     #     obj_system.din.move_down(obj_system.board)
+    if obj_system.board.get_left() > 800:
+        next_loop = True
+        break
     
+    
+    
+    
+    
+    
+    
+    
+enemy_bullet_time = time.time()  
+enemy_bullet_remove = 0  
+while(next_loop):
+    print('\033[H')
+    obj_system.din.set_remaining_time(round(700 - (time.time() - s_time))) 
+    
+    while(obj_system.enemy.get_top() >= obj_system.din.get_top()):
+        
+        obj_system.enemy.jump(obj_system.board)
+    if(obj_system.din.get_top() < 33):
+        gravity_t += 0.2
+        acc = round(0.5 * gravity_t * gravity_t)
+        obj_system.din.remove_din(obj_system.board)
+        if(obj_system.din.get_top() + 8 + acc <= obj_system.board.get_height() - 9):
+            w = obj_system.din.get_top() + acc
+            obj_system.din.set_top(w)
+        else:
+            obj_system.din.set_top(obj_system.board.get_height() - 9 - 8)
+    
+    
+    if time.time() - enemy_bullet_time >= 4:   ### enemy will fire bullet
+        for i in range(200):
+            grid = obj_system.board.get_grid()
+            print('Here')
+            if grid[obj_system.enemy.get_top() +4][obj_system.enemy.get_left() - i] == '.':
                 
+                ene = obj_system.enemy.get_left() - i
+                obj_system.din.decrease_live(obj_system.board)
+                break
+                # obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+        for i in range(90):
+            
+            obj_system.board.set_grid(obj_system.enemy.get_left() - i, obj_system.enemy.get_top() + 4, '<')           
+        enemy_bullet_time = time.time()  
+        enemy_bullet_remove = 1 
+                         
+                                
+    if(obj_system.enemy.get_top() < 33):
+        gravity_t += 0.2
+        acc = round(0.5 * gravity_t * gravity_t)
+        obj_system.enemy.remove_enemy(obj_system.board)
+        if(obj_system.enemy.get_top() + 8 + acc <= obj_system.board.get_height() - 9):
+            w = obj_system.enemy.get_top() + acc
+            obj_system.enemy.set_top(w)
+        else:
+            obj_system.enemy.set_top(obj_system.board.get_height() - 9 - 8)
+    
+                                                           
+    if time.time() - orig_time >= 0.15:   
+        is_collision = obj_system.check_collision()
+        
+        if object_yes == 1: 
+            object_yes = 2
+        else:
+            for i in range(50):
+                for j in range(co-200, co + 200):
+                    grid = obj_system.board.get_grid()
+                    if grid[i][j] == 'o':
+                        grid[i][j] = ' '
+                        obj_system.board.set_grid(j, i, ' ')
+            
+            object_yes = 0
+    
+    if time.time() - orig_time >= 0.15:
+        if enemy_bullet_remove == 1:
+            enemy_bullet_remove = 2
+        else:
+            for i in range(50):
+                for j in range(800, 1000):
+                    grid = obj_system.board.get_grid()
+                    if grid[i][j] == '<':
+                        grid[i][j] = ' '
+                        obj_system.board.set_grid(j, i, ' ')
+            enemy_bullet_remove = 0        
+    
+    
+      
+    obj_system.board.create_scenery()
+    obj_system.board.move_screen(obj_system.din, 1, obj_system.enemy)
+    obj_system.din.create_din(obj_system.board)
+    obj_system.enemy.create_enemy(obj_system.board)
+    obj_system.render()
+    inp = get_input()
+    if inp == 'd':
+        if time.time() - enemy_bullet_time >= 4:   ### enemy will fire bullet
+            for i in range(200):
+                grid = obj_system.board.get_grid()
+                print('Here')
+                if grid[obj_system.enemy.get_top() +4][obj_system.enemy.get_left() - i] == '.':
+                
+                    ene = obj_system.enemy.get_left() - i
+                    obj_system.din.decrease_live(obj_system.board)
+                    break
+                # obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+            for i in range(90):
+            
+                obj_system.board.set_grid(obj_system.enemy.get_left() - i, obj_system.enemy.get_top() + 4, '<')           
+            enemy_bullet_time = time.time()  
+            enemy_bullet_remove = 1 
+                                           
+
+        obj_system.din.move_right(obj_system.board)
+    elif inp == 'a':
+        if time.time() - enemy_bullet_time >= 4:   ### enemy will fire bullet
+            for i in range(200):
+                grid = obj_system.board.get_grid()
+                print('Here')
+                if grid[obj_system.enemy.get_top() +4][obj_system.enemy.get_left() - i] == '.':
+            
+                    ene = obj_system.enemy.get_left() - i
+                    obj_system.din.decrease_live(obj_system.board)
+                    break
+            # obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+            for i in range(90):
+        
+                obj_system.board.set_grid(obj_system.enemy.get_left() - i, obj_system.enemy.get_top() + 4, '<')  
+            enemy_bullet_time = time.time()  
+            enemy_bullet_remove = 1 
+        # is_collision = obj_system.check_collision()
+        # if is_collision == False:
+        obj_system.din.move_left(obj_system.board)
+    elif inp == 'w':
+        gravity_t = 0
+        if time.time() - enemy_bullet_time >= 4:   ### enemy will fire bullet
+            for i in range(200):
+                grid = obj_system.board.get_grid()
+                print('Here')
+                if grid[obj_system.enemy.get_top() +4][obj_system.enemy.get_left() - i] == '.':
+            
+                    ene = obj_system.enemy.get_left() - i
+                    obj_system.din.decrease_live(obj_system.board)
+                    break
+            # obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+            for i in range(90):
+        
+                obj_system.board.set_grid(obj_system.enemy.get_left() - i, obj_system.enemy.get_top() + 4, '<')  
+            enemy_bullet_time = time.time()  
+            enemy_bullet_remove = 1 
+    
+        # is_collision = obj_system.check_collision()
+        # if is_collision == False:
+        obj_system.din.jump(obj_system.board)
+            
+    elif inp == 'f': ##fire bullet
+        object_yes = 1 
+        for i in range(200):
+            grid = obj_system.board.get_grid()
+            if grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == '{' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == 'O' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == '!' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == 'D' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == '_' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == '}' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == ',' or grid[obj_system.din.get_top() +4][obj_system.din.get_left() + 9 + i] == ':':
+                co = obj_system.din.get_left() + 9 + i
+                obj_system.enemy.set_lives(obj_system.enemy.get_lives() - 1)
+                break
+                # obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+        for i in range(30):
+            
+            obj_system.board.set_grid(obj_system.din.get_left() + 9 + i, obj_system.din.get_top() + 4, 'o')
+                
+    
+    elif inp == 'q':
+        quit()
+        x = False
+    if obj_system.din.get_lives() <= 0:
+        os.system('clear')
+        obj_system.render()
+        print('Game Over')
+        print("Score : " , obj_system.din.get_coins() + obj_system.din.get_enemy_killed() * 2)
+        time.sleep(1)
+        sys.exit(0)
+        os.system('clear')    
+    if obj_system.enemy.get_lives() <= 0:
+        os.system('clear')
+        obj_system.render()
+        print('********WON********')
+        # print("Score : " , obj_system.din.get_coins())
+        print("Score : " , obj_system.din.get_coins() + obj_system.din.get_enemy_killed() * 2)
+
+        time.sleep(1)
+        sys.exit(0)
+        os.system('clear')
+        
+    if obj_system.din.get_remaining_time() <= 0:
+        os.system('clear')
+        obj_system.render()
+        print('***** Time is Up *****')
+        print("Score : " , obj_system.din.get_coins() + obj_system.din.get_enemy_killed() * 2)
+
+        time.sleep(1)
+        sys.exit(0)
+        os.system('clear')
+    # obj_system.render()   
+    # if time.time() - enemy_bullet_time >= 4:   ### enemy will fire bullet
+    #     for i in range(200):
+    #         grid = obj_system.board.get_grid()
+    #         print('Here')
+    #         if grid[obj_system.enemy.get_top() +4][obj_system.enemy.get_left() - i] == '.':
+                
+    #             ene = obj_system.enemy.get_left() - i
+    #             obj_system.din.decrease_live(obj_system.board)
+    #             break
+    #             # obj_system.fire_beams.remove_beam_only_right(co, obj_system.board)   
+    #     for i in range(90):
+            
+    #         obj_system.board.set_grid(obj_system.enemy.get_left() - i, obj_system.enemy.get_top() + 4, '<')           
+    #     enemy_bullet_time = time.time()  
+    #     enemy_bullet_remove = 1 
+                                           
 
         
 
